@@ -1,0 +1,41 @@
+.table {
+  margin: 0 auto;
+  margin-top: 20px;
+  border: none;
+}
+.cell {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  transition: 0.2s;
+  background-color: rgb(153, 151, 179);
+  font-family: cursive;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  border-radius: 5px;
+  user-select: none;
+}
+
+/* .cell:hover {
+  background-color: lightskyblue;
+  color: white;
+  border-radius: 5px;
+} */
+
+.cell.marked {
+  background-color: rgb(214, 206, 194);
+}
+
+.stopwatch {
+  display: grid;
+  justify-items: center;
+  grid-row-gap: 23px;
+  width: 100%;
+  padding-top: 25px;
+}
+.time {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 300;
+  font-size: 48px;
+}
