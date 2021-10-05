@@ -1,7 +1,7 @@
 body {
   height: 100vh;
   background-color: black;
-  /* overflow: hidden; */
+  overflow: hidden;
   /* height: 100%; */
   /* display: block; */
 }
@@ -22,6 +22,7 @@ h2 {
   margin-top: 20px;
   border: none;
 }
+
 .cell {
   width: 50px;
   height: 50px;
@@ -80,13 +81,15 @@ h2 {
   right: 10vw;
   bottom: 50vh;
   height: 300px;
-  width: 300px;
+  width: 400px;
   justify-content: space-evenly;
   flex-direction: column;
 }
 
 .diff-container button {
-  background-color: rgb(19, 98, 216);
+  /* background-color: rgb(19, 98, 216); */
+  background-color: rgba(19, 98, 216, 0);
+
   border-radius: 20px;
   display: inline-block;
   padding: 0.35em 1.2em;
@@ -103,21 +106,26 @@ h2 {
   box-shadow: 8px 4px 21px -1px #000000;
   text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
     0px -5px 35px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.37);
 }
 .diff-container .safe-click-btn {
-  background-color: rgb(235, 151, 235);
+  color: #fcfcfc;
+
+  background-color: rgba(19, 98, 216, 0);
 }
 .diff-container .restart-btn {
-  background-color: rgb(238, 255, 0);
-  color: black;
+  background-color: rgba(19, 98, 216, 0);
+  color: #fcfcfc;
 }
 .safe-click-btn span {
   font-size: 15px;
 }
 .diff-container button:hover {
   color: #000000;
-  background-color: #ffffff;
+  background-color: #aae7ff;
   box-shadow: 8px 4px 21px -1px #838282;
+  cursor: pointer;
+  transform: scale(1.1);
 }
 @media all and (max-width: 30em) {
    .diff-container button {
@@ -151,7 +159,6 @@ h2 {
   display: flex;
   flex-direction: row;
   padding: 10px;
-  border: wheat;
 }
 .hint-img {
   cursor: pointer;
@@ -164,7 +171,10 @@ h2 {
 }
 
 /* cool starts shit */
-
+.stars-container {
+  height: 100vh;
+  position: fixed;
+}
 #stars {
   content: "e";
   background: transparent;
@@ -719,5 +729,61 @@ h2 {
   }
   to {
     transform: translateY(-2000px);
+  }
+}
+
+/* Winnermodal */
+
+.winner-modal {
+  position: fixed;
+  left: 10vw;
+  top: 20vh;
+  width: 30vw;
+  height: 50vh;
+  font-size: 50px;
+}
+.looser-modal {
+  position: fixed;
+  left: 10vw;
+  top: 20vh;
+  width: 30vw;
+  height: 50vh;
+  font-size: 50px;
+}
+.roll-in-blurred-left {
+  -webkit-animation: roll-in-blurred-left 0.65s cubic-bezier(0.23, 1, 0.32, 1)
+    both;
+  animation: roll-in-blurred-left 0.65s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@-webkit-keyframes roll-in-blurred-left {
+  0% {
+    -webkit-transform: translateX(-1000px) rotate(-720deg);
+    transform: translateX(-1000px) rotate(-720deg);
+    -webkit-filter: blur(50px);
+    filter: blur(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0) rotate(0deg);
+    transform: translateX(0) rotate(0deg);
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+@keyframes roll-in-blurred-left {
+  0% {
+    -webkit-transform: translateX(-1000px) rotate(-720deg);
+    transform: translateX(-1000px) rotate(-720deg);
+    -webkit-filter: blur(50px);
+    filter: blur(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0) rotate(0deg);
+    transform: translateX(0) rotate(0deg);
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
   }
 }

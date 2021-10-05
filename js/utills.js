@@ -5,7 +5,6 @@ function renderBoard(size) {
     for (var j = 0; j < size; j++) {
       var cell = gBoard[i][j];
 
-      // console.log('cell', cell)
       strHtml += `<td class="cell cell${i}-${j} ${
         cell.isMarked ? "marked" : ""
       }" 
@@ -28,7 +27,6 @@ function getHtmlFromCell(cell) {
 }
 
 function renderCell(location, value) {
-  // Select the elCell and set the value
   var elCell = document.querySelector(`.cell${location.i}-${location.j}`);
   elCell.innerHTML = value;
 }
@@ -38,7 +36,7 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
 }
-
+//stopper functions
 function timeToString(time) {
   let diffInHrs = time / 3600000;
   let hh = Math.floor(diffInHrs);
@@ -84,16 +82,15 @@ function reset() {
   print("00:00:00");
   elapsedTime = 0;
 }
-
+//update functions
 function updateLives() {
   var elLives = document.querySelector(".lives-container");
   elLives.innerHTML = EMPTY;
   for (var i = 0; i < gGame.lifeLeft; i++) {
-    console.log("LIFE LEFT", gGame.lifeLeft);
-
     elLives.innerHTML += LIFE;
   }
 }
+
 function updateFlags() {
   var elLives = document.querySelector(".flags-container");
   elLives.innerHTML = EMPTY;
@@ -108,4 +105,40 @@ function showHints() {
   for (var i = 0; i < gGame.hints; i++) {
     elHint.innerHTML += HINT_IMG;
   }
+}
+//display winner/looser
+function showWinner() {
+  var elWinner = document.querySelector(".winner-modal");
+  elWinner.innerHTML = '<h1 class="roll-in-blurred-left">Winner!</h1>';
+}
+
+function hideWinner() {
+  var elWinner = document.querySelector(".winner-modal");
+  elWinner.innerHTML = "";
+}
+function showLooser() {
+  var elLooser = document.querySelector(".looser-modal");
+  elLooser.innerHTML = '<h1 class="roll-in-blurred-left">You Lost!</h1>';
+}
+
+function hideLooser() {
+  var elLooser = document.querySelector(".looser-modal");
+  elLooser.innerHTML = "";
+}
+
+//general update data
+function updateData() {
+  gGame.shownCount = 0;
+  gGame.lifeLeft = 2;
+  gGame.safeClicks = 3;
+  gGame.flagCount = 2;
+  gGame.hints = 3;
+}
+
+//general update dom
+function updateDom() {
+  updateLives();
+  updateFlags();
+  showHints();
+  updateSaveClickButton();
 }

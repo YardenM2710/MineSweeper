@@ -9,11 +9,11 @@ function createBoard(difficulty = 4) {
   return board;
 }
 function createMines() {
-  var times = 0;
-  if (gDifficulty === 4) times = 2;
-  if (gDifficulty === 6) times = 3;
-  if (gDifficulty === 8) times = 4;
-  for (var i = 0; i < times; i++) {
+  var mines = 0;
+  if (gDifficulty === 4) mines = 2;
+  if (gDifficulty === 6) mines = 4;
+  if (gDifficulty === 8) mines = 6;
+  for (var i = 0; i < mines; i++) {
     var randomIdx = getRandomInt(1, gBoard.length);
     var secondRandomIdx = getRandomInt(0, gBoard.length);
     createMine(randomIdx, secondRandomIdx);

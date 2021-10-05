@@ -1,15 +1,22 @@
 window.addEventListener("contextmenu", (e) => e.preventDefault());
-//data model
-const MINE = "💥";
-const EMPTY = "";
-const FLAG = "🚩";
 //images
 const LIFE = '<img class="live-img" src="img/heart.png"/>';
 const WINNING_IMG = '<img class="winning-smiley" src="img/happy.png"/>';
 const SAD_IMG = '<img class="winning-smiley" src="img/sad.png"/>';
 const PLAYING_IMG = '<img class="winning-smiley" src="img/playing.png"/>';
-const HINT_IMG = '<img class="hint-img" src="img/light-bulb.png"/>';
+const HINT_IMG =
+  '<img class="hint-img" src="img/light-bulb.png" title="Take A Hint"/>';
 const FLAG_IMG = '<img class="flag-img" src="img/flags.png"/>';
+//sound
+var soundMineStepping = new Audio();
+soundMineStepping.src = "sound/mixkit-fast-rocket-whoosh-1714.wav";
+var soundWinning = new Audio();
+soundWinning.src = "sound/final_615c7019c6f7d3004471954e_907549.mp4";
+
+//data model
+const MINE = "💥";
+const EMPTY = "";
+const FLAG = "🚩";
 
 var gDifficulty = 4;
 var gBoard;
@@ -17,6 +24,8 @@ var gLevel = {
   SIZE: 4,
   MINES: 2,
 };
+var gHistory = [];
+
 var gGame = {
   isOn: false,
   shownCount: 0,
@@ -31,26 +40,47 @@ var gGame = {
 
 //init game
 function init() {
-  updateLives();
   gBoard = createBoard(gDifficulty);
   createMines(gLevel.MINES);
   console.log(gBoard);
   reset();
   renderBoard(gDifficulty);
-  updateFlags();
-  showHints();
+  updateDom();
 }
+
 function restartGame() {
-  gGame.shownCount = 0;
-  gGame.lifeLeft = 2;
+  soundWinning.pause();
+  hideWinner();
+  hideLooser();
+  updateData();
   if (gDifficulty > 4) gGame.lifeLeft = 3;
   if (gDifficulty > 4) gGame.flagCount = 3;
   init();
+  gHistory = [];
 }
 
 //actions
+function undo() {
+  if (gHistory.length < 1) return;
+  var currHistory = gHistory.pop();
+  gBoard = currHistory.gBoard;
+  gGame = currHistory.gGame;
+  updateSaveClickButton();
+  showHints();
+  updateLives();
+  updateFlags();
+  renderBoard(gBoard.length);
+}
+
+function addDataToHistory() {
+  var gBoardCopy = JSON.parse(JSON.stringify(gBoard));
+  var gGameCopy = JSON.parse(JSON.stringify(gGame));
+  var gameHistory = { gGame: gGameCopy, gBoard: gBoardCopy };
+  gHistory.push(gameHistory);
+}
 function showSafeClick() {
   if (gGame.safeClicks === 0) return;
+  addDataToHistory();
   var randomIdx = getRandomInt(0, gBoard.length);
   var secondRandomIdx = getRandomInt(0, gBoard.length);
   if (
@@ -65,6 +95,9 @@ function showSafeClick() {
     }, 1000);
   }
   gGame.safeClicks--;
+  updateSaveClickButton();
+}
+function updateSaveClickButton() {
   var elBtn = document.querySelector(".safe-click-btn span");
   elBtn.innerText = `${gGame.safeClicks} clicks remain`;
 }
@@ -104,7 +137,8 @@ function cellClicked(elCell, i, j) {
   if (!gGame.isOn && gGame.shownCount > 0) {
     return;
   }
-  // gGame.isOn = true;
+
+  addDataToHistory();
   var cell = gBoard[i][j];
   elCell.classList.add("marked");
   gBoard[i][j].isMarked = true;
@@ -113,18 +147,16 @@ function cellClicked(elCell, i, j) {
     gBoard[i][j].isShown = true;
     gGame.shownCount++;
     elSmiley.innerHTML = PLAYING_IMG;
-    console.log("SHOWCOUNT", gGame.shownCount);
-
     checkGameOver(i, j);
   }
+
   //if its a mine
   if (gBoard[i][j].isMine) {
+    soundMineStepping.play();
     elSmiley.innerHTML = SAD_IMG;
     cell.isShown = true;
     gGame.lifeLeft--;
     updateLives();
-
-    console.log("LIFE", gGame.lifeLeft);
     checkGameOver(i, j);
     renderBoard(gDifficulty);
   }
@@ -146,12 +178,12 @@ function cellClicked(elCell, i, j) {
 }
 
 function putFlag(eventKeyboard, i, j) {
-  // if (!gGame.isOn) return;
   if (gGame.flagCount === 0) return;
   if (eventKeyboard.button === 2) {
     renderCell({ i, j }, FLAG);
     gBoard[i][j].isFlagged = true;
     gGame.flagsOnBoard++;
+    gGame.flagCount--;
     checkGameOver(i, j);
     updateFlags();
   }
@@ -159,7 +191,6 @@ function putFlag(eventKeyboard, i, j) {
 
 function checkGameOver(i, j) {
   if (gGame.lifeLeft === 0) gameOver();
-
   if (
     gGame.shownCount === gBoard[i].length * gBoard[j].length - gLevel.MINES &&
     gGame.flagsOnBoard === gLevel.MINES
@@ -169,18 +200,18 @@ function checkGameOver(i, j) {
 }
 
 function gameOver() {
-  // gBoard.isShown = true
   gGame.isOn = false;
   pause();
-  console.log("LOOSE");
+  showLooser();
 }
 
 function victory() {
+  showWinner();
+  soundWinning.play();
   gGame.isOn = false;
   var elSmiley = document.querySelector(".smiley span");
   elSmiley.innerHTML = WINNING_IMG;
   pause();
-  console.log("victory");
 }
 
 function ShowEmptyNegs(mat, rowIdx, colIdx) {
