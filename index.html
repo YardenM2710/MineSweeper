@@ -11,26 +11,26 @@
     <div id='stars'></div>
     <div id='stars2'></div>
     <div id='stars3'></div>
-
+    
         <h1>MineSweeper</h1>
+       
         <div onclick="restartGame()" class="smiley">
-            <span>😎</span>
+            <span>Lets GO</span>
         </div>
 
     <div class="stopwatch">
         <div class="circle">
             <span class="time" id="display">00:00:00</span>
         </div>
+        <div onclick="getHint()" class="hints"></div>
     <div class="board-container">
         <table class="table">
           
         </table>
     </div>
-    <div class="game-controls-container">
             <div class="status-container">
-                <h1>Life:</h1>
                 <div class="lives-container"></div>
-
+                <div class="flags-container"></div>
             </div>
 
         <div class="diff-container">
@@ -38,6 +38,7 @@
             <button onclick="setDiff(6)">Medium</button>
             <button onclick="setDiff(8)">Hard</button>
             <button onclick="restartGame()" class="restart-btn">Restart</button>
+            <button onclick="showSafeClick()" class="safe-click-btn">Safe Click <br> <span>3 clicks remain</span></button>
         </div>
     </div>
     

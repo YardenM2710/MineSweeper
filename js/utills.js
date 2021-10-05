@@ -87,7 +87,25 @@ function reset() {
 
 function updateLives() {
   var elLives = document.querySelector(".lives-container");
+  elLives.innerHTML = EMPTY;
   for (var i = 0; i < gGame.lifeLeft; i++) {
+    console.log("LIFE LEFT", gGame.lifeLeft);
+
     elLives.innerHTML += LIFE;
+  }
+}
+function updateFlags() {
+  var elLives = document.querySelector(".flags-container");
+  elLives.innerHTML = EMPTY;
+  for (var i = 0; i < gGame.flagCount; i++) {
+    elLives.innerHTML += FLAG_IMG;
+  }
+}
+
+function showHints() {
+  var elHint = document.querySelector(".hints");
+  elHint.innerHTML = EMPTY;
+  for (var i = 0; i < gGame.hints; i++) {
+    elHint.innerHTML += HINT_IMG;
   }
 }

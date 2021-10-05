@@ -1,12 +1,17 @@
-html {
-  height: 100%;
-}
 body {
+  height: 100vh;
   background-color: black;
   /* overflow: hidden; */
-  display: block;
+  /* height: 100%; */
+  /* display: block; */
 }
+
 h1 {
+  color: blanchedalmond;
+  font-family: cursive;
+  text-align: center;
+}
+h2 {
   color: blanchedalmond;
   font-family: cursive;
   text-align: center;
@@ -25,20 +30,31 @@ h1 {
   background-color: rgb(136, 191, 236);
   font-family: cursive;
   cursor: pointer;
-  border: solid black;
   transition: 0.3s;
   border-radius: 5px;
   user-select: none;
 }
 .smiley {
+  color: wheat;
+  text-align: center;
+  font-family: cursive;
+}
+.smiley span {
+  color: wheat;
   text-align: center;
 }
+.flags-container {
+  display: flex;
+  padding-left: 20px;
+  width: 250px;
+  align-items: center;
+}
 
-/* .cell:hover {
-  background-color: lightskyblue;
+.cell:hover {
+  background-color: rgb(53, 110, 146);
   color: white;
   border-radius: 5px;
-} */
+}
 
 .cell.marked {
   background-color: rgb(240, 232, 224);
@@ -88,7 +104,16 @@ h1 {
   text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
     0px -5px 35px rgba(255, 255, 255, 0.3);
 }
-
+.diff-container .safe-click-btn {
+  background-color: rgb(235, 151, 235);
+}
+.diff-container .restart-btn {
+  background-color: rgb(238, 255, 0);
+  color: black;
+}
+.safe-click-btn span {
+  font-size: 15px;
+}
 .diff-container button:hover {
   color: #000000;
   background-color: #ffffff;
@@ -109,12 +134,33 @@ h1 {
   height: 40px;
   width: 40px;
 }
+.game-controls-container {
+  display: flex;
+  justify-content: space-between;
+}
 
 .status-container {
   display: flex;
   justify-content: space-between;
-  width: 250px;
+  width: 300px;
   align-items: center;
+  flex-direction: row;
+  padding-left: 20px;
+}
+.lives-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  border: wheat;
+}
+.hint-img {
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+}
+.flag-img {
+  height: 30px;
+  width: 30px;
 }
 
 /* cool starts shit */
