@@ -92,10 +92,11 @@ function updateLives() {
 }
 
 function updateFlags() {
-  var elLives = document.querySelector(".flags-container");
-  elLives.innerHTML = EMPTY;
+  var elFlag = document.querySelector(".flags-container");
+  elFlag.innerHTML = EMPTY;
+
   for (var i = 0; i < gGame.flagCount; i++) {
-    elLives.innerHTML += FLAG_IMG;
+    elFlag.innerHTML += FLAG_IMG;
   }
 }
 
@@ -109,7 +110,8 @@ function showHints() {
 //display winner/looser
 function showWinner() {
   var elWinner = document.querySelector(".winner-modal");
-  elWinner.innerHTML = '<h1 class="roll-in-blurred-left">Winner!</h1>';
+  elWinner.innerHTML = `<h1 class="roll-in-blurred-left">Winner!</h1>`;
+  elWinner.innerHTML += ASTRONOUT_IMG;
 }
 
 function hideWinner() {
@@ -119,6 +121,7 @@ function hideWinner() {
 function showLooser() {
   var elLooser = document.querySelector(".looser-modal");
   elLooser.innerHTML = '<h1 class="roll-in-blurred-left">You Lost!</h1>';
+  elLooser.innerHTML += SAD_ASTRONOUT_IMG;
 }
 
 function hideLooser() {
@@ -128,11 +131,15 @@ function hideLooser() {
 
 //general update data
 function updateData() {
+  gGame.flagsOnBoard = 0;
   gGame.shownCount = 0;
   gGame.lifeLeft = 2;
   gGame.safeClicks = 3;
   gGame.flagCount = 2;
   gGame.hints = 3;
+  if (gDifficulty > 4) gGame.lifeLeft = 3;
+  if (gDifficulty > 4) gGame.flagCount = 4;
+  if (gDifficulty > 6) gGame.flagCount = 6;
 }
 
 //general update dom
@@ -140,5 +147,5 @@ function updateDom() {
   updateLives();
   updateFlags();
   showHints();
-  updateSaveClickButton();
+  updateSafeClickButton();
 }

@@ -87,7 +87,6 @@ h2 {
 }
 
 .diff-container button {
-  /* background-color: rgb(19, 98, 216); */
   background-color: rgba(19, 98, 216, 0);
 
   border-radius: 20px;
@@ -120,6 +119,7 @@ h2 {
 .safe-click-btn span {
   font-size: 15px;
 }
+
 .diff-container button:hover {
   color: #000000;
   background-color: #aae7ff;
@@ -137,6 +137,10 @@ h2 {
   height: 40px;
   width: 40px;
   padding: 5px;
+}
+.astronout-img {
+  height: 300px;
+  width: 300px;
 }
 .winning-smiley {
   height: 40px;

@@ -13,8 +13,9 @@ function createMines() {
   if (gDifficulty === 4) mines = 2;
   if (gDifficulty === 6) mines = 4;
   if (gDifficulty === 8) mines = 6;
+  gLevel.MINES = mines;
   for (var i = 0; i < mines; i++) {
-    var randomIdx = getRandomInt(1, gBoard.length);
+    var randomIdx = getRandomInt(0, gBoard.length);
     var secondRandomIdx = getRandomInt(0, gBoard.length);
     createMine(randomIdx, secondRandomIdx);
   }

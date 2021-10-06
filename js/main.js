@@ -7,6 +7,10 @@ const PLAYING_IMG = '<img class="winning-smiley" src="img/playing.png"/>';
 const HINT_IMG =
   '<img class="hint-img" src="img/light-bulb.png" title="Take A Hint"/>';
 const FLAG_IMG = '<img class="flag-img" src="img/flags.png"/>';
+const ASTRONOUT_IMG =
+  '<img class="astronout-img roll-in-blurred-left" src="img/astronaut-victory-yeah.gif"/>';
+const SAD_ASTRONOUT_IMG =
+  '<img class="astronout-img roll-in-blurred-left" src="img/sad-astronout.gif"/>';
 //sound
 var soundMineStepping = new Audio();
 soundMineStepping.src = "sound/mixkit-fast-rocket-whoosh-1714.wav";
@@ -53,8 +57,6 @@ function restartGame() {
   hideWinner();
   hideLooser();
   updateData();
-  if (gDifficulty > 4) gGame.lifeLeft = 3;
-  if (gDifficulty > 4) gGame.flagCount = 3;
   init();
   gHistory = [];
 }
@@ -65,7 +67,8 @@ function undo() {
   var currHistory = gHistory.pop();
   gBoard = currHistory.gBoard;
   gGame = currHistory.gGame;
-  updateSaveClickButton();
+  gGame.flagCount = 2;
+  updateSafeClickButton();
   showHints();
   updateLives();
   updateFlags();
@@ -78,6 +81,7 @@ function addDataToHistory() {
   var gameHistory = { gGame: gGameCopy, gBoard: gBoardCopy };
   gHistory.push(gameHistory);
 }
+
 function showSafeClick() {
   if (gGame.safeClicks === 0) return;
   addDataToHistory();
@@ -95,9 +99,9 @@ function showSafeClick() {
     }, 1000);
   }
   gGame.safeClicks--;
-  updateSaveClickButton();
+  updateSafeClickButton();
 }
-function updateSaveClickButton() {
+function updateSafeClickButton() {
   var elBtn = document.querySelector(".safe-click-btn span");
   elBtn.innerText = `${gGame.safeClicks} clicks remain`;
 }
@@ -156,13 +160,20 @@ function cellClicked(elCell, i, j) {
     elSmiley.innerHTML = SAD_IMG;
     cell.isShown = true;
     gGame.lifeLeft--;
+    gGame.flagCount = 2;
+    gGame.flagsOnBoard = 0;
+    if (gDifficulty > 4) gGame.flagCount = 4;
+    if (gDifficulty > 6) gGame.flagCount = 6;
     updateLives();
+    updateFlags();
     checkGameOver(i, j);
     renderBoard(gDifficulty);
   }
+
   //if its a normal cell
   if (cell) {
     gBoard[i][j].isMarked = true;
+
     if (!cell.isMine) {
       var minesCount = countMinesAround(gBoard, i, j);
       gBoard[i][j].minesAround = minesCount;
@@ -175,17 +186,26 @@ function cellClicked(elCell, i, j) {
   if (countMinesAround(gBoard, i, j) === 0) {
     elCell.innerText = "";
   }
+
+  if (gBoard[i][j].isFlagged) {
+    gGame.flagCount++;
+    gGame.flagsOnBoard--;
+    updateFlags();
+  }
 }
 
 function putFlag(eventKeyboard, i, j) {
   if (gGame.flagCount === 0) return;
+  if (gBoard[i][j].isFlagged) return;
+
   if (eventKeyboard.button === 2) {
     renderCell({ i, j }, FLAG);
     gBoard[i][j].isFlagged = true;
     gGame.flagsOnBoard++;
     gGame.flagCount--;
-    checkGameOver(i, j);
+    addDataToHistory();
     updateFlags();
+    checkGameOver(i, j);
   }
 }
 
@@ -206,9 +226,9 @@ function gameOver() {
 }
 
 function victory() {
+  gGame.isOn = false;
   showWinner();
   soundWinning.play();
-  gGame.isOn = false;
   var elSmiley = document.querySelector(".smiley span");
   elSmiley.innerHTML = WINNING_IMG;
   pause();
